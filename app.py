@@ -48,10 +48,10 @@ def predict():
     # Add noise to features
     for col in df.select_dtypes(include=['float64', 'int64']).columns:
         if col != 'label':
-            df[col] = df[col] + np.random.normal(0, 0.5, size=len(df))
+            df[col] = df[col] + np.random.normal(0, 1.5, size=len(df))
 
     # Flip 3% labels
-    flip_idx = df.sample(frac=0.03, random_state=42).index
+    flip_idx = df.sample(frac=0.08, random_state=42).index
     df.loc[flip_idx, 'label'] = 1 - df.loc[flip_idx, 'label']
 
     # ==============================
