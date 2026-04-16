@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AMR Prediction</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+
+<!-- 🔄 LOADING SCREEN -->
+<div id="loader" class="loader-container">
+    <div class="spinner"></div>
+    <p id="loading-text">Processing your dataset... 0%</p>
+</div>
+
+<!-- 🔷 TOP BAR -->
+<div class="top-bar">
+    <img src="/static/nitw_logo.jpg" class="logo">
+
+    <div class="profile">
+        <img src="/static/bios.jpg" class="profile-pic">
+        <p class="name">Biotechnology</p>
+    </div>
+</div>
+
+<!-- 🔷 HERO SECTION -->
+<div class="hero">
+
+    <h1>🧬 AMR Prediction System</h1>
+    <p class="subtitle">
+        Machine Learning-based Detection of Antimicrobial Resistance using Genomic Features
+    </p>
+
+    <!-- DRAG DROP -->
+    <div class="upload-box" id="drop-area">
+
+        <form action="/predict" method="post" enctype="multipart/form-data" onsubmit="showLoader()">
+            
+            <input type="file" name="file" id="fileInput" hidden required>
+
+            <p>📂 Drag & Drop your CSV here</p>
+            <p>or</p>
+
+            <button type="button" onclick="document.getElementById('fileInput').click()">
+                Choose File
+            </button>
+
+            <p id="file-name"></p>
+
+            <button type="submit">🚀 Run Prediction</button>
+
+        </form>
+
+    </div>
+</div>
+
+<!-- 🔷 FEATURES -->
+<div class="features">
+    <div class="feature-card">
+        <h3>🤖 ML Models</h3>
+        <p>Random Forest, SVM, Gradient Boosting, Logistic Regression</p>
+    </div>
+
+    <div class="feature-card">
+        <h3>📊 Insights</h3>
+        <p>Accuracy, AUC, Cross Validation & Performance Metrics</p>
+    </div>
+
+    <div class="feature-card">
+        <h3>⚡ Fast Analysis</h3>
+        <p>Instant results with interactive dashboard visualization</p>
+    </div>
+</div>
+
+<!-- 🔷 ABOUT YOU -->
+<div class="about-section">
+    <h2>👨‍💻 About Me</h2>
+
+    <img src="/static/moin_pic.jpg" class="mentor-pic">
+
+    <h4>Mo Moin (22BTB0A45)</h4>
+
+    <p>
+        Final year Biotechnology student passionate about Machine Learning, Data Science,
+        and solving real-world healthcare problems using AI.
+    </p>
+</div>
+
+<!-- 🔷 MENTOR -->
+<div class="mentor-section">
+    <h2>🎓 Project Mentor</h2>
+
+    <div class="mentor-card">
+        <img src="/static/mentor.jpg" class="mentor-pic">
+
+        <div>
+            <h3>Prof. R Satish Babu</h3>
+
+            <p>
+                Professor, Department of Biotechnology<br>
+                Room No: 421<br>
+                Phone: +91-870-2462885<br>
+                Email: satishbabu@nitw.ac.in
+            </p>
+
+            <h4>Research Areas</h4>
+            <p>
+                Biological Wastewater Treatment, Bioprocess Engineering, AI-based Disease Prediction,
+                Environmental Biotechnology, Modeling & Optimization of Bioprocesses,
+                Waste to Value Technologies
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- 🔷 CONTACT -->
+<div class="contact-section">
+    <h2>📞 My Contacts</h2>
+
+    <p>Email: mm22btb0a45@student.nitw.ac.in</p>
+    <p>LinkedIn: Mo Moin</p>
+    <p>Phone: +91-7518169839</p>
+</div>
+
+<!-- 🔷 SCRIPTS -->
+<script>
+function showLoader() {
+    document.getElementById("loader").style.display = "flex";
+
+    let percent = 0;
+    let text = document.getElementById("loading-text");
+
+    let interval = setInterval(() => {
+        percent += 5;
+        text.innerText = "Processing your dataset... " + percent + "%";
+
+        if (percent >= 100) clearInterval(interval);
+    }, 150);
+}
+
+// Drag & Drop
+const dropArea = document.getElementById("drop-area");
+const fileInput = document.getElementById("fileInput");
+const fileName = document.getElementById("file-name");
+
+dropArea.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    dropArea.classList.add("dragover");
+});
+
+dropArea.addEventListener("dragleave", () => {
+    dropArea.classList.remove("dragover");
+});
+
+dropArea.addEventListener("drop", (e) => {
+    e.preventDefault();
+    fileInput.files = e.dataTransfer.files;
+    fileName.innerText = fileInput.files[0].name;
+    dropArea.classList.remove("dragover");
+});
+
+fileInput.addEventListener("change", () => {
+    fileName.innerText = fileInput.files[0].name;
+});
+</script>
+
+</body>
+</html>

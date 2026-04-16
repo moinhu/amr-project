@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AMR Dashboard</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <!-- 🔷 HEADER -->
+    <h1>🧬 AMR Prediction Dashboard</h1>
+
+    <!-- 🔷 SUMMARY CARDS -->
+    <div class="cards">
+        <div class="card">
+            <h2>🏆 Best Model</h2>
+            <p>{{ best_model }}</p>
+        </div>
+
+        <div class="card">
+            <h2>🎯 Accuracy</h2>
+            <p>{{ accuracy }}%</p>
+        </div>
+    </div>
+
+    <!-- 🔷 CHARTS SECTION -->
+    <div class="charts">
+
+        <div class="chart-box">
+            <h3>📊 Accuracy Comparison</h3>
+            <img src="/static/accuracy.png" alt="Accuracy Chart">
+        </div>
+
+        <div class="chart-box">
+            <h3>📊 AUC Comparison</h3>
+            <img src="/static/auc.png" alt="AUC Chart">
+        </div>
+
+    </div>
+
+    <!-- 🔷 CONFUSION MATRIX -->
+    <div class="chart-box full-width">
+        <h3>📉 Confusion Matrix</h3>
+        <img src="/static/confusion.png" alt="Confusion Matrix">
+    </div>
+
+    <!-- 🔷 TABLE -->
+    <h2>📋 Model Results</h2>
+    <div class="table-container">
+        {{ table|safe }}
+    </div>
+
+    <!-- 🔷 BACK BUTTON -->
+    <div class="back-btn">
+        <a href="/">⬅ Back to Home</a>
+    </div>
+
+</div>
+
+</body>
+</html>
