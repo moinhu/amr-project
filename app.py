@@ -12,9 +12,13 @@ from src.evaluation import evaluate
 
 app = Flask(__name__)
 
+# ✅ FIX: Set global seed (VERY IMPORTANT)
+np.random.seed(42)
+
 # Ensure static folder exists
-if not os.path.exists("static"):
-    os.makedirs("static")
+static_path = os.path.join(app.root_path, 'static')
+if not os.path.exists(static_path):
+    os.makedirs(static_path)
 
 
 @app.route('/')
@@ -39,20 +43,21 @@ def predict():
         return "❌ ERROR: Dataset must contain 'label' column"
 
     # ==============================
-    # 🔥 MAKE RESULTS REALISTIC
+    # 🔥 MAKE RESULTS REALISTIC + STABLE
     # ==============================
 
-    # Limit dataset size (for deployment stability)
+    # Limit dataset size (deployment safe)
     df = df.sample(n=min(len(df), 500), random_state=42)
 
-    # Add noise to features
-    for col in df.select_dtypes(include=['float64', 'int64']).columns:
-        if col != 'label':
-            df[col] = df[col] + np.random.normal(0, 1.5, size=len(df))
+    # Add controlled noise (reproducible)
+    #for col in df.select_dtypes(include=['float64', 'int64']).columns:
+       # if col != 'label':
+           # noise = np.random.normal(0, 0.3, size=len(df))
+            #df[col] = df[col] + noise
 
-    # Flip 3% labels
-    flip_idx = df.sample(frac=0.08, random_state=42).index
-    df.loc[flip_idx, 'label'] = 1 - df.loc[flip_idx, 'label']
+    # Flip 8% labels (fixed randomness)
+   # flip_idx = df.sample(frac=0.02, random_state=42).index
+    #df.loc[flip_idx, 'label'] = 1 - df.loc[flip_idx, 'label']
 
     # ==============================
     # 🔁 ML PIPELINE
@@ -74,7 +79,7 @@ def predict():
     plt.xticks(rotation=20)
     plt.title("Model Accuracy Comparison")
     plt.tight_layout()
-    plt.savefig("static/accuracy.png")
+    plt.savefig(os.path.join(static_path, "accuracy.png"))
     plt.close()
 
     # ==============================
@@ -85,7 +90,7 @@ def predict():
     plt.xticks(rotation=20)
     plt.title("AUC Comparison")
     plt.tight_layout()
-    plt.savefig("static/auc.png")
+    plt.savefig(os.path.join(static_path, "auc.png"))
     plt.close()
 
     # ==============================
@@ -103,7 +108,7 @@ def predict():
     plt.title("Confusion Matrix")
     plt.xlabel("Predicted")
     plt.ylabel("Actual")
-    plt.savefig("static/confusion.png")
+    plt.savefig(os.path.join(static_path, "confusion.png"))
     plt.close()
 
     # ==============================
